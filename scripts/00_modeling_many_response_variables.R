@@ -102,7 +102,7 @@ temp <- MODEL_TYPE_train[[i]] # Write the i_th training dataframe to a temporary
 set.seed(500) # Set seed again for reproducibility. 
 train_folds <- vfold_cv(temp, v = 5, strata = paste(colnames(dep_var[i]))) # Create folds of temp for cross validation.
 
-#' Here is where the training dataframes from earlier come in handy. Because each dataframe only has one response variable, we can write the model formula as paste(colnames(dep_var[i])) ~ ., where . indicates "all other columns." This is much easier than writing out Reponse_1 ~ x11 + x12 ... x30. The paste function takes the name of the reponse variable for that iteration of the model to build the formula. We will reuse this trick in the recipe.
+#' Here is where the training dataframes from earlier come in handy. Because each dataframe only has one response variable, we can write the model formula as paste(colnames(dep_var[i])) ~ ., where . indicates "all other columns." This is much easier than writing out Response_1 ~ x11 + x12 ... x30. The paste function takes the name of the response variable for that iteration of the model to build the formula. We will reuse this trick in the recipe.
 
 #' Make a recipe object with the model formula
 
@@ -115,7 +115,7 @@ MODEL_TYPE_spec <- MODEL_TYPE(
   
 # Set the model type and tuning parameters. Think of the tuning parameters as empty placeholders.  
 
-    tune_1 = tune(),
+  tune_1 = tune(),
   tune_2 = tune()
 ) %>% 
 
