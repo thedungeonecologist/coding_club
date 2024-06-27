@@ -63,7 +63,7 @@ dep_var_test <- test_set[1:10]
 
 MODEL_TYPE_train <- list()
 for(i in 1:10) {
-  MODEL_TYPE_train[[i]] <- data.frame(Response = dep_var_train[,i],
+  MODEL_TYPE_train[[i]] <- data.frame(dep_var_train[,i],
                                       train_set[c(11:30)])
 }
 
@@ -71,7 +71,7 @@ for(i in 1:10) {
 
 MODEL_TYPE_test <- list()
 for(i in 1:10) {
-  MODEL_TYPE_train[[i]] <- data.frame(RESPONSE = dep_var_train[,i],
+  MODEL_TYPE_train[[i]] <- data.frame(dep_var_train[,i],
                                       train_set[c(11:30)])
 }
 
@@ -100,25 +100,36 @@ for(i in 1:length(MODEL_TYPE_train)) {
 temp <- MODEL_TYPE_train[[i]] # Write the i_th training dataframe to a temporary data.frame object.
 
 set.seed(500) # Set seed again for reproducibility. 
-train_folds <- vfold_cv(temp, v = 5, strata = RESPONSE) # Create folds of temp for cross validation.
+train_folds <- vfold_cv(temp, v = 5, strata = paste(colnames(dep_var[i]))) # Create folds of temp for cross validation.
 
-#' Here is where the training dataframes from earlier come in handy. Because each dataframe only has one reponse variable and we renamed that variable to RESPONSE, we can write the model formula as RESPONSE ~ ., where . indicates "all other columns." This is much easier than writing out Reponse_1 ~ x11 + x12 ... x30 
+#' Here is where the training dataframes from earlier come in handy. Because each dataframe only has one response variable, we can write the model formula as paste(colnames(dep_var[i])) ~ ., where . indicates "all other columns." This is much easier than writing out Reponse_1 ~ x11 + x12 ... x30. The paste function takes the name of the reponse variable for that iteration of the model to build the formula. We will reuse this trick in the recipe.
 
 #' Make a recipe object with the model formula
 
 MODEL_TYPE_rec <- 
-  recipe(REPONSE ~ ., data = temp) 
+  recipe(as.formula(paste(colnames(dep_var_train[i]), '~ .')), data = temp) 
 
 #' Create a specification object for the model type. 
 
-MODEL_TYPE_spec <- MODEL_TYPE( # Set the model type and tuning parameters. Think of the tuning parameters as empty placeholders.  
-  tune_1 = tune(),
+MODEL_TYPE_spec <- MODEL_TYPE( 
+  
+# Set the model type and tuning parameters. Think of the tuning parameters as empty placeholders.  
+
+    tune_1 = tune(),
   tune_2 = tune()
 ) %>% 
-  set_engine('MODEL_PACKAGE', # Set the engine (package) from the model you're using.
+
+# Set the engine (package) from the model you're using. Many models want to use scaled predictors, but do due diligence ahead of time to determine if this is advisable. Set prob.model to True if you want to output probabilities.   
+  
+  set_engine('MODEL_PACKAGE', 
              scaled = T,
              prob.model = T) %>% 
-  set_mode('classification') # Describe the type of task you want to perform. Typically classification or regression.
+
+# Describe the task you want to perform. Typically classification or regression.
+  
+  set_mode('classification') 
+
+
 
 #' Create a workflow object to integrate the recipe and specification. Technically these steps can be combined, but keeping the objects separate helps for tweaking things.
 
@@ -132,7 +143,9 @@ param_grid <- dials::grid_regular(tune_1,
                                   tune_2,
                                   levels = 10) # This will make a 10-level grid of each tuning parameter we set when we made the model specification. 
 
-MODEL_TYPE_metrics <- metric_set(roc_auc, accuracy, kap) # Decide what metrics you want to use to evaluate models. This will vary based on your research objectives. 
+# Decide what metrics you want to use to evaluate models. This will vary based on your research objectives. 
+
+MODEL_TYPE_metrics <- metric_set(roc_auc, accuracy, kap) 
 
 #' Bring everything together into a results object. 
 
@@ -144,10 +157,11 @@ MODEL_TYPE_tune_res <-
     grid = param_grid)
 
 #' Select the best model based on a performance metric. Accuracy is just an example. Be sure to think critically about your research objectives and what type of error is the most important for you to minimize. 
+
 MODEL_TYPE_best <- MODEL_TYPE_tune_res %>% 
   select_best(metric = 'accuracy') 
  
-#' Here will start writing back to lists. The objects above will be overwritten with each iteration of the loop. The following will be stored to lists which we will use to evaluate models.
+#' Here will start writing back to lists. The objects above will be overwritten with each iteration of the loop. The following will be stored to lists which we will use to evaluate models. You can store as many objects as you want in lists, even temp, but I like to keep my environment as clean as possible.
 
 MODEL_TYPE_final_wf[[i]] <- 
   MODEL_TYPE_wf %>% 
@@ -172,4 +186,3 @@ stopCluster(cl) # Stop parallel processing
 saveRDS(MODEL_TYPE_mod, here('output', 'MODEL_TYPE_mod.rds'))
 saveRDS(MODEL_TYPE_wf, here('output', 'MODEL_TYPE_final_wf.rds'))
 saveRDS(MODEL_TYPE_final_fit, here('output', 'MODEL_TYPE_final_fit.rds'))
-
