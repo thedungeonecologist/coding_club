@@ -35,11 +35,9 @@ print(temp)
 
 This will work with either *paste* or *paste0*. *paste0* just automatically excludes separators so its easier to work with for simple tasks. If you use paste0, note the spaces added to the text. *noquote* is analogous to a paste function but will exclude quotation marks from characters. This is typically used when you need R to treat a character as some other object class, but here just makes more sense for producing a sentence.
 
-<<<<<<< HEAD
 We type the sentence as normal for a report, but we also insert the randomly generated value we assigned to temp. This will paste together the first half of the sentence, our dynamically generated value, and the second half. In this case, we are counting a number of detections, but you can change this to any sentence which makes sense for your own research.
-=======
+
 We type the sentence as normal for a report, but we also insert the randomly generated value we assigned to temp. This will paste together the first half of the sentence, our dynamically generated value, and the second half of the example. In this case, we are counting a number of detections, but you can change this to any sentence which makes sense for your own research.
->>>>>>> 8ff8a3c656f9acdf6af66c095dc768886cb223cd
 
 ```{r}
 paste0("There were a total of ", noquote(temp), " detections.")
