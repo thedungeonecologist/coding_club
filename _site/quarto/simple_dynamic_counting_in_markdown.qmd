@@ -1,0 +1,44 @@
+---
+title: "Dynamic Counting in Markdown"
+author: "Darren Shoemaker"
+format: html
+toc: true
+embed-resources: true
+editor: visual
+---
+
+## Dynamic Counting in Quarto Markdown
+
+Quarto/RMarkdown are powerful tools for communicating methods and results during collaboration. These reports can communicate code, outputs, graphics, and other information efficiently to committee members and other collaborators. You may at some have a variable that changes each time you run an analysis. Manually updating this value introduces a potential for mistakes, but more importantly it's just tedious. Here is one technique for dynamically updating a text output based on a value. This is a simple example using only a randomly generated integer, but this integer can stand in for a count, sum, or any other dynamically generated value.
+
+## Libraries
+
+We don't actually need any libraries for this exercise, but load here anyway to build good habits.
+
+```{r}
+#| output: false
+library(here)
+```
+
+## Generate Data
+
+This will generate a random integer between 1 and 10, assigned to an object named "temp." Substitute your counting function here. By saving the integer to the temp object, we will be able to access this later.
+
+```{r}
+#| output: true
+
+temp <- sample(1:10, size = 1)
+print(temp)
+```
+
+## Make Sentence
+
+This will work with either *paste* or *paste0*. *paste0* just automatically excludes separators so its easier to work with for simple tasks. If you use paste0, note the spaces added to the text. *noquote* is analogous to a paste function but will exclude quotation marks from characters. This is typically used when you need R to treat a character as some other object class, but here just makes more sense for producing a sentence.
+
+We type the sentence as normal for a report, but we also insert the randomly generated value we assigned to temp. This will paste together the first half of the sentence, our dynamically generated value, and the second half. In this case, we are counting a number of detections, but you can change this to any sentence which makes sense for your own research.
+
+We type the sentence as normal for a report, but we also insert the randomly generated value we assigned to temp. This will paste together the first half of the sentence, our dynamically generated value, and the second half of the example. In this case, we are counting a number of detections, but you can change this to any sentence which makes sense for your own research.
+
+```{r}
+paste0("There were a total of ", noquote(temp), " detections.")
+```
