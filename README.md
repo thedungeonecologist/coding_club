@@ -16,3 +16,6 @@ The links below will go to html webpages for each topic. This may be easier than
 
 https://thedungeonecologist.github.io/coding_club/modeling_many_response_variables
 
+<B>Simple Dynamic Counting in Markdown</B>
+
+https://thedungeonecologist.github.io/coding_club/simple_dynamic_counting_in_markdown
