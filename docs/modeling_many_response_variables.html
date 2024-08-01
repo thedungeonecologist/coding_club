@@ -3127,7 +3127,7 @@ vertical-align: -.125em;
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># *This script will not install packages!</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Here is necessary for collaboration. This will let anyone open data files from their local resository</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Here is necessary for collaboration. This will let anyone open data files on their local machine</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here) </span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
@@ -3215,66 +3215,69 @@ vertical-align: -.125em;
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> MODEL_TYPE_train[[i]] <span class="co"># Write the i_th training dataframe to a temporary data.frame object.</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">500</span>) <span class="co"># Set seed again for reproducibility. train_folds &lt;- vfold_cv(temp, v = 5, strata = RESPONSE) # Create folds of temp for cross validation.</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">500</span>) <span class="co"># Set seed again for reproducibility. </span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Here is where the training dataframes from earlier come in handy. Because each dataframe only has one reponse variable and we renamed that variable to RESPONSE, we can write the model formula as RESPONSE ~ ., where . indicates &quot;all other columns.&quot; This is much easier than writing out Reponse_1 ~ x11 + x12 ... x30</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>train_folds <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(temp, <span class="at">v =</span> <span class="dv">5</span>, <span class="at">strata =</span> <span class="fu">paste</span>(<span class="fu">colnames</span>(dep_var[i]))) <span class="co"># Create folds of temp for cross validation.</span></span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a recipe object with the model formula</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; Here is where the training dataframes from earlier come in handy. Because each dataframe only has one response variable, we can write the model formula as paste(colnames(dep_var[i])) ~ ., where . indicates &quot;all other columns.&quot; This is much easier than writing out Response_1 ~ x11 + x12 ... x30. The paste function takes the name of the reponse variable for that iteration of the model to build the formula. We will reuse this trick in the recipe.</span></span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(REPONSE <span class="sc">~</span> ., <span class="at">data =</span> temp)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a recipe object with the model formula</span></span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a specification object for the model type.</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_spec <span class="ot">&lt;-</span> <span class="fu">MODEL_TYPE</span>( <span class="co"># Set the model type and tuning parameters. Think of the tuning parameters as empty placeholders.</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">tune_1 =</span> <span class="fu">tune</span>(), </span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">tune_2 =</span> <span class="fu">tune</span>() ) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&#39;MODEL_PACKAGE&#39;</span>, <span class="co"># Set the engine (package) from the model you&#39;re using. </span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>             <span class="at">scaled =</span> T, </span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>             <span class="at">prob.model =</span> T) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">&#39;classification&#39;</span>) <span class="co"># Describe the type of task you want to perform. Typically classification or regression.</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a workflow object to integrate the recipe and specification. Technically these steps can be combined, but keeping the objects separate helps for tweaking things.</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_wf <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(MODEL_TYPE_spec) <span class="sc">%&gt;%</span> <span class="co">#Add the specification </span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(MODEL_TYPE_rec) <span class="co"># Add the recipe</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">500</span>) <span class="co"># Pop quiz! Why do we set seeds? </span></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>param_grid <span class="ot">&lt;-</span> dials<span class="sc">::</span><span class="fu">grid_regular</span>(tune_1, </span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>                                  tune_2, </span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">levels =</span> <span class="dv">10</span>) <span class="co"># This will make a 10-level grid of each tuning parameter we set when we made the model specification.</span></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_metrics <span class="ot">&lt;-</span> <span class="fu">metric_set</span>(roc_auc, accuracy, kap) <span class="co"># Decide what metrics you want to use to evaluate models. This will vary based on your research objectives.</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Bring everything together into a results object.</span></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_tune_res <span class="ot">&lt;-</span> </span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>  MODEL_TYPE_wf <span class="sc">%&gt;%</span> </span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tune_grid</span>(<span class="at">resamples =</span> train_folds, </span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>            <span class="at">metrics =</span> MODEL_TYPE_metrics, </span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>            <span class="at">grid =</span> param_grid)</span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the best model based on a performance metric. Accuracy is just an example. Be sure to think critically about your research objectives and what type of error is the most important for you to minimize. MODEL_TYPE_best &lt;- MODEL_TYPE_tune_res %&gt;% select_best(metric = &#39;accuracy&#39;)</span></span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Here will start writing back to lists. The objects above will be overwritten with each iteration of the loop. The following will be stored to lists which we will use to evaluate models.</span></span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_final_wf[[i]] <span class="ot">&lt;-</span> </span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>  MODEL_TYPE_wf <span class="sc">%&gt;%</span> </span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">finalize_workflow</span>(MODEL_TYPE_best) <span class="co"># Save the workflow for the best model</span></span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_final_fit[[i]] <span class="ot">&lt;-</span> </span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>  MODEL_TYPE_final_wf[[i]] <span class="sc">%&gt;%</span> </span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">last_fit</span>(train) <span class="co"># Save the fit object for the best model</span></span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_mod[[i]] <span class="ot">&lt;-</span> <span class="fu">extract_fit_engine</span>(MODEL_TYPE_final_fit[[i]]) <span class="co"># Save the model object.</span></span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: If you&#39;re going to be using tidymodels packages, the workflow objects may be more useful than the model objects, but I like saving both just in case.</span></span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>}) <span class="co"># End of tryCatch function</span></span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>} <span class="co"># End of for loop</span></span>
-<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cl) <span class="co"># Stop parallel processing</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_rec <span class="ot">&lt;-</span> </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(<span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="fu">colnames</span>(dep_var_train[i]), <span class="st">&#39;~ .&#39;</span>)), <span class="at">data =</span> temp)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a specification object for the model type.</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_spec <span class="ot">&lt;-</span> <span class="fu">MODEL_TYPE</span>( <span class="co"># Set the model type and tuning parameters. Think of the tuning parameters as empty placeholders.</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">tune_1 =</span> <span class="fu">tune</span>(), </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">tune_2 =</span> <span class="fu">tune</span>() ) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&#39;MODEL_PACKAGE&#39;</span>, <span class="co"># Set the engine (package) from the model you&#39;re using. </span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>             <span class="at">scaled =</span> T, </span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>             <span class="at">prob.model =</span> T) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">&#39;classification&#39;</span>) <span class="co"># Describe the type of task you want to perform. Typically classification or regression.</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a workflow object to integrate the recipe and specification. Technically these steps can be combined, but keeping the objects separate helps for tweaking things.</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_wf <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(MODEL_TYPE_spec) <span class="sc">%&gt;%</span> <span class="co">#Add the specification </span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(MODEL_TYPE_rec) <span class="co"># Add the recipe</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">500</span>) <span class="co"># Pop quiz! Why do we set seeds? </span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>param_grid <span class="ot">&lt;-</span> dials<span class="sc">::</span><span class="fu">grid_regular</span>(tune_1, </span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>                                  tune_2, </span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">levels =</span> <span class="dv">10</span>) <span class="co"># This will make a 10-level grid of each tuning parameter we set when we made the model specification.</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_metrics <span class="ot">&lt;-</span> <span class="fu">metric_set</span>(roc_auc, accuracy, kap) <span class="co"># Decide what metrics you want to use to evaluate models. This will vary based on your research objectives.</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Bring everything together into a results object.</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_tune_res <span class="ot">&lt;-</span> </span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>  MODEL_TYPE_wf <span class="sc">%&gt;%</span> </span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tune_grid</span>(<span class="at">resamples =</span> train_folds, </span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>            <span class="at">metrics =</span> MODEL_TYPE_metrics, </span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>            <span class="at">grid =</span> param_grid)</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the best model based on a performance metric. Accuracy is just an example. Be sure to think critically about your research objectives and what type of error is the most important for you to minimize. MODEL_TYPE_best &lt;- MODEL_TYPE_tune_res %&gt;% select_best(metric = &#39;accuracy&#39;)</span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Here will start writing back to lists. The objects above will be overwritten with each iteration of the loop. The following will be stored to lists which we will use to evaluate models.</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_final_wf[[i]] <span class="ot">&lt;-</span> </span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>  MODEL_TYPE_wf <span class="sc">%&gt;%</span> </span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">finalize_workflow</span>(MODEL_TYPE_best) <span class="co"># Save the workflow for the best model</span></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_final_fit[[i]] <span class="ot">&lt;-</span> </span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>  MODEL_TYPE_final_wf[[i]] <span class="sc">%&gt;%</span> </span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">last_fit</span>(train) <span class="co"># Save the fit object for the best model</span></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE_mod[[i]] <span class="ot">&lt;-</span> <span class="fu">extract_fit_engine</span>(MODEL_TYPE_final_fit[[i]]) <span class="co"># Save the model object.</span></span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: If you&#39;re going to be using tidymodels packages, the workflow objects may be more useful than the model objects, but I like saving both just in case.</span></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>}) <span class="co"># End of tryCatch function</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>} <span class="co"># End of for loop</span></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cl) <span class="co"># Stop parallel processing</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>I recommend saving all the objects you made as .rds files. This will let you reload the models later without having to remake them, which as we described earlier can take a long time.</p>
 <div class="cell">

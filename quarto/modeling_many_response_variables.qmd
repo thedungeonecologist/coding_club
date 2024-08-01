@@ -28,7 +28,7 @@ I follow a general syntax of MODEL-TYPE-ABBREVIATION-OBJECT-TYPE-ABBREVIATION fo
 
 # *This script will not install packages!
 
-# Here is necessary for collaboration. This will let anyone open data files from their local resository
+# Here is necessary for collaboration. This will let anyone open data files on their local machine
 
 library(here) 
 library(tidymodels)
