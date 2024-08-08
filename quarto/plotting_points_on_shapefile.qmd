@@ -12,6 +12,7 @@ This document describes using the terra, sf, and ggplot2 family to plot points t
 ## Libraries
 
 ```{r}
+#| output: false
 library(tidyverse)
 library(here)
 library(sf)
@@ -25,7 +26,6 @@ library(ggspatial)
 For this example we will use a shapefile of river networks across the United States^1^ and a .csv of United States reservoirs^2^ with surface area greater than 100 hectares. Remember we use the here package to ensure these scripts can run on anyone's computer. We use the read_sf function from the sf package to load our shapefile as simple features object. This is a dataframe with a special geometry column which can used for spatial analyses.
 
 ```{r}
-#| output: false
 
 # River Shapefile
 

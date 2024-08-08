@@ -1,6 +1,6 @@
 #'---
 #' title: "Modeling Many Response Variables"
-#' author: "Darren Shoemaker
+#' author: "Darren Shoemaker"
 #' ---
 
 # Welcome!
