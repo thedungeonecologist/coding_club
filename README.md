@@ -14,6 +14,10 @@ https://thedungeonecologist.github.io/coding_club/modeling_many_response_variabl
 
 https://thedungeonecologist.github.io/coding_club/simple_dynamic_counting_in_markdown
 
+<B>Plotting Point Data on Shapefile</B>
+
+https://thedungeonecologist.github.io/coding_club/plotting_points_on_shapefile
+
 See quarto folder for markdown files you can run on your local machine. 
 
 See docs folder for raw HTML files of the topics posted above. 
