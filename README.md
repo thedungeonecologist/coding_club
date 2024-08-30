@@ -8,6 +8,8 @@ The links below will go to html webpages for each topic. This may be easier than
 
 <B>Staying Organized in R</B>
 
+https://thedungeonecologist.github.io/coding_club/staying_organized_R_projects
+
 <B>Modeling Many Response Variables</B>
 
 https://thedungeonecologist.github.io/coding_club/modeling_many_response_variables
