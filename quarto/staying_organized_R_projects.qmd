@@ -27,7 +27,7 @@ Long answer: As you use R more for classes, theses, and projects, you will find 
 
 ## Step 1: Everything Needs a Home
 
-Start by making a folder for all of your R stuff. Everything we do from this point on will happen inside this folder. R is a programming language which means it is very particular about how commands are entered. One aspect of this is that R does not spaces. Always place an underscore \_ or other character between terms. I will literally name this file R_Stuff. You can't get more descriptive than that. If you like clumsy allegories, call R_Stuff our house.
+Start by making a folder for all of your R stuff. Everything we do from this point on will happen inside this folder. R is a programming language which means it is very particular about how commands are entered. One aspect of this is that R does not like spaces. Always place an underscore \_ or other character between terms. I will literally name this file R_Stuff. You can't get more descriptive than that. If you like clumsy allegories, call R_Stuff our house.
 
 ![](images/r_stuff.PNG){fig-align="center"}
 
