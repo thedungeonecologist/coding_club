@@ -6,6 +6,8 @@ Index of Topics
 
 The links below will go to html webpages for each topic. This may be easier than using the code.
 
+<B>Staying Organized in R</B>
+
 <B>Modeling Many Response Variables</B>
 
 https://thedungeonecologist.github.io/coding_club/modeling_many_response_variables
