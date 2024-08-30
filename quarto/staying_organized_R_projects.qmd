@@ -104,7 +104,7 @@ head(data)
 
 ### A Note on Filtering
 
-The filter() may be new so we'll walk through that. We begin the same data object we made earlier, then we're using the pipe operator, &\>&. The pipe operator is just a way to tell R to do something and then do something else. Here, we're telling R to take the data object "and then" apply the filter function. The filter function tells R to take all the Species which are exactly equal ( == ) to virginica, so we make a new data object which only includes virginica.
+The filter() function may be new so we'll walk through that. We start with the data object we made earlier, then we're going to use the pipe operator, &\>&. The pipe operator is just a way to tell R to do something and then do something else. Here, we're telling R to take the data object "and then" apply the filter function. The filter function tells R to take all the Species which are exactly equal ( == ) to virginica, so we make a new data object which only includes virginica.
 
 ## Step 5: Using the Output and Temp Folders
 
@@ -119,7 +119,7 @@ write.csv(data, file = here('temp', 'virginica_temp.csv'), row.names = F)
 write.csv(data, file = here('data/processed', 'virginica_processed.csv'), row.names = F)
 ```
 
-We actually wrote the same file to three different locations. In practice, you probably wouldn't do this, but we can demonstrate the flexibility of the system. Because we're using the here() function, we don't need to set the working directory or write the entire file path. We just say that we're here(), which is wherever here() set the working directory when we loaded the library. Conveniently, this is the top level folder, so what we're really telling R is to make a .csv file here, inside either the output, temp, and data/processed folders. Typically, you would write results or tables to the output folder, something more experimental or exploratory to the temp folder, and a finalized, clean to dataset to the processed folder. This approach is also completely flexible, so you add more folders as needed. Maybe you want a folder for rasters inside of the data folder, or you want to sort your outputs more. Adapt this as you need.
+We actually wrote the same file to three different locations. In practice, you probably wouldn't do this, but we can demonstrate the flexibility of the this approach. Because we're using the here() function, we don't need to set the working directory or write the entire file path. We just say that we're here(). Conveniently, this is the top level folder, so what we're really telling R is to make a .csv file here, inside either the output, temp, or data/processed folder. Typically, you would write results or tables to the output folder, something more experimental or exploratory to the temp folder, and a finalized, clean to dataset to the processed folder. This approach is also flexible, so you can add folders as needed. Maybe you want a folder for rasters inside of the data folder, or you want to sort your outputs more. Adapt as needed.
 
 ## The Next Steps: the Project Template
 
