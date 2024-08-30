@@ -68,9 +68,6 @@ And you have a pretty map! Remember that almost everything in a ggplot can be cu
 
 1.  <https://www.weather.gov/gis/Rivers>
 
-```{=html}
 <!-- -->
-```
-2.  Rodgers, K.D., 2017, A Reservoir Morphology Database for the
-    Conterminous United States: U.S. Geological Survey data release,
-    https://doi.org/10.5066/F7GF0RQZ
+
+2.  Rodgers, K.D., 2017, A Reservoir Morphology Database for the Conterminous United States: U.S. Geological Survey data release, https://doi.org/10.5066/F7GF0RQZ
