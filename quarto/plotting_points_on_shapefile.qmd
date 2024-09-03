@@ -1,5 +1,5 @@
 ---
-title: "Plotting Rivers and Points"
+title: "Plotting Points on a Map or Figure"
 author: "Darren Shoemaker"
 format: html
 toc: true
