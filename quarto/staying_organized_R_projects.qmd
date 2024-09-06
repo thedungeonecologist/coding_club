@@ -33,7 +33,7 @@ Start by making a folder for all of your R stuff. Everything we do from this poi
 
 ## Step 2: Maintaining a Consistent Folder Structure
 
-The R Project is one of the most powerful tools for organization, but rarely mentioned in statistics courses. This is not the fault of the instructors - those courses are already packed with more material than can be reasonably taught. Start by making a folder inside of R_Stuff. This can be anything, but remember the name can't have any spaces. The name should also be descriptive. Someone who is not familiar with the folder or its contents (read: you in a couple months) should reasonably be able to guess what the folder contains. Consider this a room inside the house.
+Start by making a folder inside of R_Stuff. This can be anything, but remember the name can't have any spaces. The name should also be descriptive. Someone who is not familiar with the folder or its contents (read: you in a couple months) should reasonably be able to guess what the folder contains. Consider this a room inside the house.
 
 ![](images/r_organized_house.PNG){fig-align="center"}
 
@@ -52,6 +52,8 @@ Inside the data folder, we're going to go one step further and add a raw and pro
 Finally, are ready to move into R. Begin by opening RStudio. If you feel the need, you can cry a bit. This is a healthy emotional release and R is scary. Once you're ready, move to the file tab and click New Project.
 
 ![](images/new_project.PNG){fig-align="center"}
+
+The R Project is one of the most powerful tools for organization, but rarely mentioned in statistics courses. This is not the fault of the instructors - those courses are already packed with more material than can be reasonably taught. An RStudio project is associated with your working directory and creates a shortcut to open everything in that directory in your RStudio session.
 
 In the next menu, click Existing Directory. New Directory is also fine, but we already set up our file structure. Version Control is the scary basement. Stay out of the basement.
 
