@@ -37,13 +37,13 @@ Start by making a folder inside of R_Stuff. This can be anything, but remember t
 
 ![](images/r_organized_house.PNG){fig-align="center"}
 
-So, anyone who clicks on this folder will expect to see files related to the coding club.
+So, anyone who clicks on this folder will expect to see files related to a project called organized house.
 
-Inside the R_organized_house folder, we're going to make a few more folders. These can also be named anything. You want them to be descriptive enough to make their contents clear, but general enough to reuse for multiple projects. I like, at minimum, including data, output, scripts, and temp folders. Think of these as desks or closets in the house.
+Inside R_organized_house, we're going to make a few more folders. These can also be named anything. You want them to be descriptive enough to make their contents clear, but general enough to reuse for multiple projects. I like, at minimum, including data, output, scripts, and temp folders. Think of these as desks or closets in the room.
 
 ![](images/house_folders-02.PNG){fig-align="center"}
 
-Inside the data folder, we're going to go one step further and add a raw and processed folder. The raw data folder is the junk drawer. We toss whatever into here without really thinking. The processed folder is tool drawer, which is hopefully more organized.
+Inside data, we're going to go one step further and add a raw and processed folder. The raw data folder is the junk drawer. We can toss whatever into here without really thinking. The processed folder is tool drawer, which is hopefully more organized. We'll write cleaned data to this folder.
 
 ![](images/data_folders-01.PNG){fig-align="center"}
 
@@ -71,7 +71,7 @@ The .Rproj file is the foundation of the organization system we're using here. W
 
 ## Step 4: Working with Scripts and Data
 
-Once you have a project set up, you're finally to begin working! A .R file is is probably the most fundamental file type to the R programming language. Any scripts you make will have a .R file extension. To take full advantage of the folder structure we worked so hard to make, we're going to use the here library. This is a powerful library for collaboration and we will only be scratching the surface. Install the package if needed, then load the library.
+Once you have a project set up, you're finally to begin working! A .R script is is probably the most fundamental file type to the R programming language. Any scripts you make will have a .R file extension. To take full advantage of the folder structure we made, we're going to use the here library. This is a powerful library for collaboration and we will only be scratching the surface of its functionality. Install the package if needed, then load the library.
 
 The here package automatically sets the working directory to the highest folder in the project. The package begins working as soon as you load the library, but you can also call the here::here() function if you want to set the working directory manually. The function works by looking for a .Rproj file, .gitignore file, and a few others. Conveniently, we have a .Rproj file at the main folder, so the working directory above is set to coding_club. As you are probably working with a different folder name, double that this is set correctly.
 
