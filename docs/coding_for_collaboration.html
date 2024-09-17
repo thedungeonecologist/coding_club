@@ -3123,7 +3123,7 @@ vertical-align: -.125em;
 
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>Today we’re going to discuss how to share code with your committee and collaborators. An unfortunately frequent event during graduate school is to spend weeks or months developing a script, share that script with your committee member, and the script fails as soon as soon as they try to run it. What happened? It worked perfectly yesterday! We’re going to talk about potential pitfalls and my approach to avoiding them. As always, my solution is not the only solution, so if you find something which works better, absolutely do that (and maybe tell me so I don’t keep doing stuff the hard way).</p>
+<p>Today we’re going to discuss how to share code with your committee and collaborators. An unfortunately frequent event during graduate school is to spend weeks or months developing a script, share that script with your committee member, and the script fails as soon as soon as they try to run it. What happened? It worked perfectly yesterday! We’re going to talk about potential pitfalls and my approach to avoiding them. As always, my solution is not the only solution, so if you find something which works better, absolutely do that (and maybe tell me so I don’t keep doing stuff the hard way). The idea is that your collaborator(s) should be able to simply click run and receive the same output as you.</p>
 <p>A useful heuristic I like is to ask myself a simple question, “Would my friend be able to run my script on his laptop at our Arctic research base?” If the answer is yes*, you’re already done, but if you’re not sure, this may be able to help.</p>
 <section id="working-in-projects" class="level2">
 <h2 class="anchored" data-anchor-id="working-in-projects">[1] Working in Projects</h2>
@@ -3188,6 +3188,13 @@ vertical-align: -.125em;
 </section>
 <section id="reading-in-data" class="level2">
 <h2 class="anchored" data-anchor-id="reading-in-data">[3] Reading in Data</h2>
+<p>Once our friend has loaded the appropriate libraries, they need to access any data read in by the script. A common trap is to use the function setwd() to access files.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARcAAAAUCAYAAACnMHnOAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAUHSURBVHhe7Zk9ctwwDIX3ALmDr5BJ7dadJ+VW6dJkZmfc+gKu9gKZbdY3cLsHcOcT+DaKAIoSQD6S0FpyvDaKb5IQIgg+/Eh2Nj9uf3fEt6vv3c9ffxzHcRbBh4vjOKughovjOM5SqOGy2Wwcx3GW4esOl/vu+Pel218h26a72b50z8pOz792x+vp76ft7fj8GlAMa5+xLLfd/uG1120i6GW1J1w/dc9399i2AJxj4H9318f2cOhukvX/S6i5SbunbgefKyHrtwDpHf3y3/P6n5UPHy7p+tAAWXHJ5IRn1m38/rwPV+ANZHEiWnYFaTy3geZxWcNFMEvHyMzhcnXoTqA/WBvr2Zc0XPhii73J8HDhgoOFRcU+PU+xyEQF0RPeUKDpVwvHlfivFgoA+cjOeGPMtf2z/FOhr/jVQnA8K5+xCmsNFxooY37oeXyGuQ8tw4WS8Oa3NAsiCzsPnJMN7HpdMFywXCRaIOnntD2A4YIHjgWr4GEItc7IE8uxi8YMd8HJh5D+pcbOcjOQnif385ttOL+032rP0INckg1xqTnHVLAxocGC/anbq7qRNrB3fJPr53RfSNtLd7yT/m1U7xdhPVPtwtnpC2+KL9pljDPqR0E+DH1i/XKJjXnekMkvnpI2C2pWtMaIxlF+5CROEhKeSwQSfsY1I8XYEkLx1BNDsaU6c7wyNlhgFQzPZ2fUbHK4lJ5JaNlHKFagZdCudAfcXJOf9EfZocnAORxnuj4OLpE7pandf4n6/QQwl/j+WTxin9ZnDuldC1iHSyQIUB8UOSGYcmGBYIGARTFEoe/6t8Wp98XxiSLVQhMktm5yc/EDzk9UCsWVF5iObX7hjjngAsPDrXb/zLbacKE4UXx58yhQw8m1UrxAQ7jO+5O45Bqwl/xjGveTvGG4KP/Qjw1Tvc8dLoGpUE1iRDgBYV/e6LHwJfri5QvRfkps/ycVby8a+afkhvjA8Br3xH9bix/DsanYk0I0QjHoOKd16R89Yyfqbb9/Zis1a0W/lp2hgkc5Rs0tgL65eYY9oJF4DzgLrqPz5doM/5DG/RTgLDQ8Lm64xCaaNVRSWEjpAzV/TvlCYf+Rfo9CPsh/X2j7/ismJMs2XFjsVvEXMIndhGLCyZbNw2edGaeE/EhNYIOWbJxD0EyVuFr2kKdSg4HmkKBGkWvAzvGAnMF11PxybYZ/TON+EnRXsF/nN7e381HC1q/v8zuX/otipwqmcNFMME0tWdxwo89QpCfxX5layCBO/nVBcZWKu451uIQ48RkUY0lfGL+5cGn/oVmMXLSFYtPnh72wmSrF2rLz+ZU71bRD99E5SezcoFhDjjNdbw2Xwf+Yv4r/EvX7CQzDhe8g44k5S/Q4q595ryFOy3ChQM8LYoCTQMJNIH9RkAks4GgXhRr2Ts9zolQhx4FCkDBYIPZTa4ACoTBScv/lAqJ40vtO5HEN9zHGmmuLciA1ImQ8Uvt+nXOq421pV7fT2e2CzXSW/tI6Sxs7Nvxg43hA88P15nDpkf77uHYF/zWq94vA4aJzTLklX1OOh3rfag3kfisco2Wv9cvl6zCvaZeCCuPcAS6LCqG+Tj4q1DBnFvtHZWxC8HJVXNC9w/ArvwQVPlwwoWHbb9JlqH+1fH5sXy0XxTBQLmKwmxi+XOcMQh8ujrME6Y+U5/4+4xPhw8VxnFXw4eI4ziq8x3B5fHxkkM1xnM/IpvsHaLMpJ3e9ahgAAAAASUVORK5CYII=" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>This works fine on my computer. The issue is, E: is my external hard drive, R_Stuff keeps backups of my R work, and coding_club is a local directory I use for the website. My friend in the Arctic has none of these folders! This means any script which uses this line will only work exactly on my computer and if I don’t change anything about my folders. Unlikely!</p>
 <p>The here() package is my preferred method for reading in data in a collaborative setting. This package works by automatically (magically) setting the working directory to the highest folder associated with the R Project. This works by looking for .Rproj, .gitignore, or other high-level file which applies to the entire project. This should occur as soon as the library is loaded, but you can double check by calling the here::here() function.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>here<span class="sc">::</span><span class="fu">here</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3291,7 +3298,8 @@ vertical-align: -.125em;
 </section>
 <section id="sharing-the-project" class="level2">
 <h2 class="anchored" data-anchor-id="sharing-the-project">[7] Sharing the Project</h2>
-<p>With that, you should be prepared to share your analysis with your committee or collaborators! Hopefully they respond in a timely manner. Once you have everything in a .zip archive, you can share this through email, a thumb drive, OneDrive or another cloud service, or maybe even GitHub. As always, thank you for reading and please reach out with any feedback!</p>
+<p>With that, you should be prepared to share your analysis with your committee or collaborators! Hopefully they respond in a timely manner. Once you have everything in a .zip archive, you can share through email, a thumb drive, OneDrive/cloud service, or maybe even GitHub. As always, thank you for reading and please reach out with any feedback!</p>
+<p>*If you are working with extremely large files or computationally intensive tasks, their laptop may not be able to run the script anyway, so assume relatively normal analysis.</p>
 </section>
 </section>
 
